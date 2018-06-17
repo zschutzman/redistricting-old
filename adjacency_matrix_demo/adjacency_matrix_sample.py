@@ -11,7 +11,7 @@ get_ipython().run_line_magic('load_ext', 'pycodestyle_magic')
 #    pip install pycodestyle_magic
 
 
-# In[2]:
+# In[3]:
 
 
 # imports
@@ -30,7 +30,7 @@ from colormap import rgb2hex
 import stateplane
 
 
-# In[20]:
+# In[4]:
 
 
 # read in a file for the district-level geography
@@ -38,17 +38,18 @@ import stateplane
 # my version of the file has a column called 'STATECD'
 # which gives a unique identifier to each district
 df_cd = gpd.read_file('cd_us.shp')
+df_cd.sort_values('STATECD')
 
 # choose a state via FIPS code (string)
 # '42' is the meaning of life, the universe, and Pennsylvania
 # letting state_no = 'all' will do the whole US
-state_no = '01'
+state_no = '41'
 
 # add a dummy column to the DataFrame
 df_cd['new_field'] = -1
 
 
-# In[45]:
+# In[4]:
 
 
 # initialize an empty list to store the new values
@@ -95,7 +96,7 @@ for ind, row in df_cd.iterrows():
 df_cd['new_field'] = new_vals
 
 
-# In[46]:
+# In[5]:
 
 
 # visualize!
@@ -120,7 +121,7 @@ fig.axis('off')
 plt.title('Largest Eigenvalue')
 
 
-# In[43]:
+# In[32]:
 
 
 # similar code will let you make networkx graphs
@@ -130,7 +131,7 @@ plt.title('Largest Eigenvalue')
 _first=True
 sp = None
 fig=plt.figure(figsize=(18, 16), dpi= 80, facecolor='w', edgecolor='k')
-state_no='01'
+state_no='all'
 
 for ind, row in df_cd.iterrows():
 
@@ -138,7 +139,9 @@ for ind, row in df_cd.iterrows():
     fcode = row['STATECD']
     st = row['STATEFP']
     fn = fcode[0:2]+'_'+fcode
-
+    #print(fn)
+    if st == '02' or st == '15' or st == '41' or st=='30':# or st=='44' or st=='21': continue
+        continue
     # if this row is something we need to compute:
     if st == state_no or state_no == 'all':
 
@@ -160,12 +163,16 @@ for ind, row in df_cd.iterrows():
             reader = csv.reader(sind, delimiter=',')
             for row in reader:
                 crd = (float(row[2]),float(row[1]))
-                if _first: sp = stateplane.identify(crd[0],crd[1])
+                # reproject to stateplane
+                #if _first: sp = stateplane.identify(crd[0],crd[1])
+                crd = stateplane.from_latlon(crd[0],crd[1], abbr='IA_S')
+                #coords.append((crd[0], crd[1]))
+                #_first = False
+                
                 # reproject to utm
-                crd = stateplane.from_latlon(crd[0],crd[1], epsg = sp)
-                coords.append((crd[0], crd[1]))
-                _first = False
-
+                #crd = utm.from_latlon(crd[0],crd[1],13)[:2]
+                #coords.append((crd[1],crd[0]))
+                coords.append(crd)
         # build a dictionary, because for some reason that's how
         # networkx wants coordinates...
         coord_dict = {}
@@ -174,5 +181,4 @@ for ind, row in df_cd.iterrows():
         # pick a color, any color
         c = rgb2hex(random.randint(0,255), random.randint(0,255), random.randint(0,255))
         nx.draw(gr, coord_dict, node_size=1, node_color=c, edge_color=c)
-            
 
