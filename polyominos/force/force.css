@@ -1,0 +1,27 @@
+circle.node {
+  stroke-width: 100;
+}
+
+line.link {
+  stroke: #555;
+  stroke-opacity: 1.;
+  /*stroke-width: 2px;*/
+}
+.container {
+    width: 98%;
+    height: 98%;
+    background: aqua;
+    margin: auto;
+    padding: 10px;
+}
+.one {
+    width: 65%;
+    height: 95%;
+    background: red;
+    float: left;
+}
+.two {
+    width: 35%;
+    height: 95%;
+    background: black;
+}
