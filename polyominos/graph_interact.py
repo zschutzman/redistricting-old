@@ -25,6 +25,19 @@ H = nx.convert_node_labels_to_integers(G)
 d = json_graph.node_link_data(H) # node-link format to serialize
 # write json
 json.dump(d, open('force/gr.json','w'))
+
+
+G = nx.read_gpickle('metagraph_reduced')
+
+# this d3 example uses the name attribute for the mouse-hover value,
+# so add a name to each node
+for n in G.nodes(data=True):
+    n[1]['name'] = n[1]['Type']
+H = nx.convert_node_labels_to_integers(G)
+# write json formatted data
+d = json_graph.node_link_data(H) # node-link format to serialize
+# write json
+json.dump(d, open('force/gr2.json','w'))
 print('Wrote node-link JSON data to force/force.json')
 # open URL in running web browser
 http_server.load_url('force/force.html')
