@@ -38,6 +38,13 @@ d3.json("gr2.json", function(json) {
       .call(force.drag)
  
       
+       
+      
+      
+      
+      
+      
+      
       .on("mouseover",function(){
         var t = d3.select(this).attr("type");
        d3.select(this).attr("r",20);          

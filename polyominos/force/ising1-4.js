@@ -1,7 +1,8 @@
 var w = Math.round(.35*document.documentElement.clientWidth)
     h = Math.round(.8*document.documentElement.clientHeight)
-    fill = d3.scale.category20()
-    wp = Math.round(.20*document.documentElement.clientWidth);
+fill = d3.scale.threshold()
+    .range(['#0000ff','#535cf7','#6495ed','#7a8ab6','#808080','#c57664','#ff6347','#ff4429','#ff0000']);
+   wp = Math.round(.20*document.documentElement.clientWidth);
 
     
 var toggle = 0;
@@ -55,13 +56,14 @@ d3.json("gr.json", function(json) {
       .attr("cx", function(d) { return d.x; })
       .attr("cy", function(d) { return d.y; })
       .attr("type", function(d) {return d.Type;})
+      .attr("str_rep", function(d){ return d.str_rep.split('\n').join("").split(" ").join("");})
       .attr("html_rep", function(d) {return d.html_rep;})
       .attr("r", function(d) {return Math.round(2*d.deg);})
-      .style("stroke-width", 0)
+      .style("stroke-width", 2)
       .style("stroke", "black")
       .style("opacity", 1.)
       .attr("on",0)
-      .style("fill", function(d) { if (d.Type == 20) return 'PapayaWhip'; if (d.Type == 21) return 'Gold'; return fill(d.Type); })
+      .style("fill", "#ccc")
       .call(force.drag)
       .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
 
@@ -85,11 +87,7 @@ d3.json("gr.json", function(json) {
         
             if (u==t){d3.select(this).attr("r",20);}  });    
       
-         vis2.selectAll("circle.node")
-            .each(function(d){
-                var u = d3.select(this).attr("type");
-                if (u==t){d3.select(this).attr("r",20);}
-            });
+ 
             
             
             
@@ -103,11 +101,7 @@ d3.json("gr.json", function(json) {
                 
             });    
       
-         vis2.selectAll("circle.node")
-            .each(function(d){
-            d3.select(this).attr("r", function(d) {return Math.round(1.2*d.orbit)+3;})
 
-            });
             
             tooltip.transition()		
                 .duration(500)		
