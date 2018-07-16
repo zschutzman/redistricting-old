@@ -5,6 +5,7 @@ var dist3 = 0;
 var dist4 = 0;
 var cnt = 0;
 
+var simp_fill = ['#0000ff','#808080','#ff0000'];
 
 // create the svg
 var grd = d3.select('#grid').append('svg')
@@ -91,10 +92,7 @@ function do_update(){
         vis.selectAll("circle.node").each(function(d){
             var hld = this;
             chk = d3.select(this).attr("str_rep");
-
-
-        
-    
+   
     
         dist1=0;
         dist2=0;
@@ -123,9 +121,9 @@ function do_update(){
         dist3 = Math.sign(dist3);
         dist4 = Math.sign(dist4);
         
-        var col = 4 + dist1 + dist2 + dist3 + dist4;
+        var col = Math.sign(dist1 + dist2 + dist3 + dist4) + 1;
         console.log(fill[col], col);
-        d3.select(this).style("fill", fill[col]);
+        d3.select(this).style("fill", simp_fill[col]);
         });
     }
     

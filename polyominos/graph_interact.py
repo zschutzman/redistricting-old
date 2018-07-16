@@ -52,5 +52,5 @@ json.dump(d, open('force/gridist4.json','w'))
 
 print('Wrote node-link JSON data to force/force.json')
 # open URL in running web browser
-http_server.load_url('force/ising4.html')
+http_server.load_url('force/metagraph4.html')
 print('Or copy all files in force/ to webserver and load force/force.html')

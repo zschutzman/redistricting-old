@@ -1,5 +1,5 @@
 
-    
+ var linkedByIndex2 = {};   
 var vis2 = d3.select("#chart2")
   .append("svg")
     .attr("width", w)
@@ -26,6 +26,7 @@ d3.json("gr2.json", function(json) {
       .attr("x2", function(d) { return d.target.x; })
       .attr("y2", function(d) { return d.target.y; });
 
+
   var node = vis2.selectAll("circle.node")
       .data(json.nodes)
     .enter().append("svg:circle")
@@ -36,15 +37,11 @@ d3.json("gr2.json", function(json) {
       .attr("type", function(d) {return d.Type;})
       .style("fill", function(d) { if (d.Type == 20) return 'PapayaWhip'; if (d.Type == 21) return 'Gold'; return fill(d.Type); })
       .call(force.drag)
- 
-      
-       
-      
-      
-      
-      
-      
-      
+      .attr("on",0)
+            .style("stroke-width", 0)
+      .style("stroke", "black")
+      .style("opacity", 1.)
+      .on("click",connectedNodes2)
       .on("mouseover",function(){
         var t = d3.select(this).attr("type");
        d3.select(this).attr("r",20);          
@@ -74,15 +71,7 @@ d3.json("gr2.json", function(json) {
             });
      });
      
-      
-      
-      
-
     
-                
-
-
-      
   node.append("svg:title")
       .text(function(d) { return d.name; });
 
@@ -100,4 +89,125 @@ d3.json("gr2.json", function(json) {
     node.attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
   });
+  
+  
+  
+
+ 
+  
+
+
+vis2.selectAll("line.link").each(function(d){
+     linkedByIndex2[d.source.index + "," + d.target.index] = 1;
+     console.log("sss");
 });
+
+
+
+function connectedNodes2() {
+    if (d3.select(this).attr("on") ==1){
+        node.style("opacity", 1);
+        node.style("stroke-width",0);
+        d3.select(this).attr("on",0);
+        var tp = d3.select(this).attr("type");
+        vis.selectAll("circle.node").each(function(d){
+           
+                d3.select(this).attr("on",0);
+                d3.select(this).style("stroke-width",0);
+                d3.select(this).style("opacity",1);
+            
+        });
+        
+        
+        
+        toggle = 0;
+        return;
+    }
+    
+    else{
+        node.style("opacity", 1);
+        node.style("stroke-width",0);
+        d3.select(this).attr("on",1);
+        
+        var tp = d3.select(this).attr("type");
+        vis.selectAll("circle.node").each(function(d){
+                            d3.select(this).attr("on",1);
+                d3.select(this).style("stroke-width",0);
+            var tq = d3.select(this).attr("type");
+            if (tp == tq) {
+               
+                d3.select(this).attr("on",1);
+                d3.select(this).style("opacity",1);
+                
+            }
+        });
+        
+        
+        
+        
+        toggle = 0;
+    }
+
+    if (toggle == 0) {
+        d = d3.select(this).node().__data__;
+        node.style("opacity", function (o) {
+            return neighboring2(d, o) | neighboring2(o, d) | o === d ? 1 : 0.7;
+        });
+        node.style("stroke-width", function(o) {
+                        return neighboring2(d, o) | neighboring2(o, d) | o === d ? 3 : 0;
+        });
+         var oth;
+         var oth2;
+         var tp = d3.select(this).attr("type");
+        vis.selectAll("circle.node").each(function(e){
+            var tq = d3.select(this).attr("type");
+            console.log(d3.select(this).style("opacity"));
+            if (tp == tq) {
+                oth = d3.select(this);
+                
+                
+            
+        
+
+        oth2 = oth.node().__data__;
+        return;
+            }
+        });
+        vis.selectAll("circle.node").each(function(e){
+            d3.select(this).style("opacity", function(o){return neighboring(oth2, o) | neighboring(o, oth2) | o === d ? 1 : 0.7;});
+            d3.select(this).style("stroke-width", function(o) {return neighboring(oth2, o) | neighboring(o, oth2) | o === d ? 3 : 0;});
+    });
+        oth.style("opacity",1);
+        oth.style("stroke-width",3);
+    
+
+    toggle = 1-toggle;
+        
+    } 
+   
+  
+  console.log(toggle);
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+});
+console.log(linkedByIndex2);
+
+function neighboring2(a, b) {
+    return linkedByIndex2[a.index + "," + b.index];
+}

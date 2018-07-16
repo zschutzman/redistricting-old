@@ -2,7 +2,7 @@ var w = Math.round(.35*document.documentElement.clientWidth)
     h = Math.round(.8*document.documentElement.clientHeight)
     fill = d3.scale.category20()
     wp = Math.round(.20*document.documentElement.clientWidth);
-
+var linkedByIndex = {};
     
 var toggle = 0;
  
@@ -114,37 +114,7 @@ d3.json("gr.json", function(json) {
                 .style("opacity", 0);	            
      })
       
-     /* 
-    .on("click", function(){
-
-        var x = d3.select(this).attr("cx");
-        var y = d3.select(this).attr("cy");       
-
-        vis.selectAll("circle.node").each(function(d){
-            d3.select(this).style("opacity",.6);});
   
-
-        
-        d3.select(this).style("opacity",1.);
-        
-        
-        
-        vis.selectAll("line.link").each(function(d){
-            var u1 = d3.select(this).attr("x1");
-            var u2 = d3.select(this).attr("x2");
-            var v1 = d3.select(this).attr("y1");
-            var v2 = d3.select(this).attr("y2");
-            d3.select(this).attr("stroke-width", function(d){if ((u1 == x || u2 == x) && (v1==y || v2 == y)) return 8;  return Math.sqrt(d.value);});
-            d3.select(this).attr("stroke", function(d){  if ((u1 == x || u2 == x) && (v1==y || v2 == y)) return "#000"; return "#555";});
-            
-
-
-         
-
-            
-        });
-    
-    })*/
     .on("click", connectedNodes);
     
 
@@ -168,31 +138,57 @@ d3.json("gr.json", function(json) {
   });
   
   
- var linkedByIndex = {};
 vis.selectAll("line.link").each(function(d){
      linkedByIndex[d.source.index + "," + d.target.index] = 1;
+     linkedByIndex[d.target.index + "," + d.target.index] = 1;
+    linkedByIndex[d.target.index + "," + d.source.index] = 1;
+
 });
 
 
-function neighboring(a, b) {
-    return linkedByIndex[a.index + "," + b.index];
-}
+
 
 function connectedNodes() {
     if (d3.select(this).attr("on") ==1){
         node.style("opacity", 1);
-        console.log("1");
         node.style("stroke-width",0);
         d3.select(this).attr("on",0);
+        var tp = d3.select(this).attr("type");
+        vis2.selectAll("circle.node").each(function(d){
+           
+                d3.select(this).attr("on",0);
+                d3.select(this).style("stroke-width",0);
+                d3.select(this).style("opacity",1);
+            
+        });
+        
+        
+        
         toggle = 0;
         return;
     }
     
     else{
         node.style("opacity", 1);
-        console.log("2");
         node.style("stroke-width",0);
         d3.select(this).attr("on",1);
+        
+        var tp = d3.select(this).attr("type");
+        vis2.selectAll("circle.node").each(function(d){
+                            d3.select(this).attr("on",1);
+                d3.select(this).style("stroke-width",0);
+            var tq = d3.select(this).attr("type");
+            if (tp == tq) {
+               d3.select(this).attr("on",1);
+
+                d3.select(this).style("opacity",1);
+                
+            }
+        });
+        
+        
+        
+        
         toggle = 0;
     }
 
@@ -204,20 +200,54 @@ function connectedNodes() {
         node.style("stroke-width", function(o) {
                         return neighboring(d, o) | neighboring(o, d) | o === d ? 3 : 0;
         });
+         var oth;
+         var oth2;
+         var tp = d3.select(this).attr("type");
+        vis2.selectAll("circle.node").each(function(e){
+            var tq = d3.select(this).attr("type");
+            console.log(d3.select(this).style("opacity"));
+            if (tp == tq) {
+                oth = d3.select(this);
+                
+                
+            
+        
 
-    }
-    
+        oth2 = oth.node().__data__;
+        return;
+            }
+        });
+        vis2.selectAll("circle.node").each(function(e){
+            d3.select(this).style("opacity", function(o){return neighboring2(oth2, o) | neighboring2(o, oth2) | o === d ? 1 : 0.7;});
+            d3.select(this).style("stroke-width", function(o) {return neighboring2(oth2, o) | neighboring2(o, oth2) | o === d ? 3 : 0;});
+    });
+        oth.style("opacity",1);
+        oth.style("stroke-width",3);
+      
 
     toggle = 1-toggle;
-} 
+        
+    } 
+   
   
+  console.log(toggle);
   
-  
-  
+}
+
+
+
+
+
+
+
+
+
 });
 
 
-
+function neighboring(a, b) {
+    return linkedByIndex[a.index + "," + b.index];
+}
 
 
 
