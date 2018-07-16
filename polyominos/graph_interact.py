@@ -44,7 +44,7 @@ H = nx.convert_node_labels_to_integers(G)
 # write json formatted data
 d = json_graph.node_link_data(H) # node-link format to serialize
 # write json
-json.dump(d, open('force/grid4.json','w'))
+json.dump(d, open('force/gridist4.json','w'))
 
 
 

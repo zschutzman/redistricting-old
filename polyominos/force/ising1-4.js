@@ -1,10 +1,9 @@
 var w = Math.round(.35*document.documentElement.clientWidth)
     h = Math.round(.8*document.documentElement.clientHeight)
-fill = d3.scale.threshold()
-    .range(['#0000ff','#535cf7','#6495ed','#7a8ab6','#808080','#c57664','#ff6347','#ff4429','#ff0000']);
+fill = ['#0000ff','#5934df','#7250c0','#7d69a0','#808080','#aa7264','#ca6048','#e6462a','#ff0000']
    wp = Math.round(.20*document.documentElement.clientWidth);
 
-    
+
 var toggle = 0;
  
 var vis = d3.select("#chart1")
@@ -59,11 +58,11 @@ d3.json("gr.json", function(json) {
       .attr("str_rep", function(d){ return d.str_rep.split('\n').join("").split(" ").join("");})
       .attr("html_rep", function(d) {return d.html_rep;})
       .attr("r", function(d) {return Math.round(2*d.deg);})
-      .style("stroke-width", 2)
+      .style("stroke-width", 0)
       .style("stroke", "black")
       .style("opacity", 1.)
       .attr("on",0)
-      .style("fill", "#ccc")
+      .style("fill", fill[4])
       .call(force.drag)
       .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
 

@@ -1,5 +1,9 @@
-
-
+var chk = "";
+var dist1 = 0;
+var dist2 = 0;
+var dist3 = 0;
+var dist4 = 0;
+var cnt = 0;
 
 
 // create the svg
@@ -44,7 +48,7 @@ _.times(squaresColumn, function(n) {
     })
     
     .attr("party",0)
-    .style("fill","#a9d")
+    .style("fill",fill[4])
     .style("stroke","#555")
     .style("stroke-width",5)
     
@@ -60,57 +64,72 @@ _.times(squaresColumn, function(n) {
         d3.select(this).style("stroke-width","5")
     })
     
-    .on("click", function(){
+    .on("click",do_update)
+
+
+});
+    
+    
+function do_update(){    
         var t = parseInt(d3.select(this).attr("party"));
         d3.select(this).attr("party", t+1);
         if (d3.select(this).attr("party") == 2){d3.select(this).attr("party",-1);}
         console.log(d3.select(this).attr("party"));
   
 
-    // test with some feedback
-  /*  var test = rows.on('mouseover', function (d, i) {
- 
-      d3.selectAll('.square').attr('fill', 'white');
-      d3.select(this).attr('fill', '#7AC143');
-    }); */
-    
-
 
     grd.selectAll('rect').each(function(d){
-        if (d3.select(this).attr("party") == 0) d3.select(this).style("fill", "#555");
-        if (d3.select(this).attr("party") == 1) d3.select(this).style("fill", "red");
-        if (d3.select(this).attr("party") == -1) d3.select(this).style("fill", "blue");
+        //console.log(d3.select(this).attr("party"));
+        if (d3.select(this).attr("party") == 0) d3.select(this).style("fill", fill[4]);
+        if (d3.select(this).attr("party") == 1) d3.select(this).style("fill", fill[8]);
+        if (d3.select(this).attr("party") == -1) d3.select(this).style("fill", fill[0]);
 
     });
-    vis.selectAll("circle.node").each(function(d){
-       var chk = d3.select(this).attr("str_rep");
-       var d1 = 0,
-           d2 = 0,
-           d3 = 0,
-           d4 = 0;
-        var ct = 0;
+
+
+    
+        vis.selectAll("circle.node").each(function(d){
+            var hld = this;
+            chk = d3.select(this).attr("str_rep");
+
+
+        
+    
+    
+        dist1=0;
+        dist2=0;
+        dist3=0;
+        dist4=0;
+        cnt=0;
+    
+
         grd.selectAll("rect").each(function(e){
-            if (chk[ct] == 1){
-            d1 = d1 + parseInt(d3.select(this).attr("party")) * parseInt(chk[ct]);
-            } else  if (chk[ct] == 2){
-            d2 = d2 + parseInt(d3.select(this).attr("party")) * parseInt(chk[ct]);
-            }else   if (chk[ct] == 3){
-            d3 = d3 + parseInt(d3.select(this).attr("party")) * parseInt(chk[ct]);
-            }else   if (chk[ct] == 4){
-            d4 = d4 + parseInt(d3.select(this).attr("party")) * parseInt(chk[ct]);
+            var b = parseInt(d3.select(this).attr("party"));
+            if (chk[cnt] == 1){
+            dist1 = dist1 + b;
+            } else  if (chk[cnt] == 2){
+            dist2 = dist2 + b;
+            }else   if (chk[cnt] == 3){
+            dist3 = dist3 + b;
+            }else   if (chk[cnt] == 4){
+            dist4 = dist4 + b;
                        }
+            cnt = cnt+1;
+
         });
-        d1 = Math.sign(d1);
-        d2 = Math.sign(d2);
-        d3 = Math.sign(d3);
-        d4 = Math.sign(d4);
+        console.log(dist1,dist2,dist3,dist4);
+        dist1 = Math.sign(dist1);
+        dist2 = Math.sign(dist2);
+        dist3 = Math.sign(dist3);
+        dist4 = Math.sign(dist4);
         
-        var col = 5 + d1 + d2 + d3 + d4;
-        d3.select(this).style("fill", fill(col));
-        
-    });
-});
-});
+        var col = 4 + dist1 + dist2 + dist3 + dist4;
+        console.log(fill[col], col);
+        d3.select(this).style("fill", fill[col]);
+        });
+    }
+    
+do_update;
     
  
     
