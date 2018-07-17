@@ -149,6 +149,8 @@ vis.selectAll("line.link").each(function(d){
 
 
 function connectedNodes() {
+            console.log(d3.select(this).attr("on"), "ON", toggle, "TOG");
+
     if (d3.select(this).attr("on") ==1){
         node.style("opacity", 1);
         node.style("stroke-width",0);
@@ -175,7 +177,7 @@ function connectedNodes() {
         
         var tp = d3.select(this).attr("type");
         vis2.selectAll("circle.node").each(function(d){
-                            d3.select(this).attr("on",1);
+                            //d3.select(this).attr("on",1);
                 d3.select(this).style("stroke-width",0);
             var tq = d3.select(this).attr("type");
             if (tp == tq) {
@@ -205,7 +207,6 @@ function connectedNodes() {
          var tp = d3.select(this).attr("type");
         vis2.selectAll("circle.node").each(function(e){
             var tq = d3.select(this).attr("type");
-            console.log(d3.select(this).style("opacity"));
             if (tp == tq) {
                 oth = d3.select(this);
                 
@@ -230,7 +231,6 @@ function connectedNodes() {
     } 
    
   
-  console.log(toggle);
   
 }
 

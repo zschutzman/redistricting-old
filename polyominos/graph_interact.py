@@ -13,21 +13,8 @@ from networkx.readwrite import json_graph
 import http_server
 import matplotlib.pyplot as plt
 import random
-
-G = nx.read_gpickle('metagraph')
-
-# this d3 example uses the name attribute for the mouse-hover value,
-# so add a name to each node
-for n in G.nodes(data=True):
-    n[1]['name'] = n[1]['Type']
-H = nx.convert_node_labels_to_integers(G)
-# write json formatted data
-d = json_graph.node_link_data(H) # node-link format to serialize
-# write json
-json.dump(d, open('force/gr.json','w'))
-
-
-G = nx.read_gpickle('metagraph_reduced')
+'''
+G = nx.read_gpickle('metagraph5')
 
 # this d3 example uses the name attribute for the mouse-hover value,
 # so add a name to each node
@@ -37,14 +24,22 @@ H = nx.convert_node_labels_to_integers(G)
 # write json formatted data
 d = json_graph.node_link_data(H) # node-link format to serialize
 # write json
-json.dump(d, open('force/gr2.json','w'))
+json.dump(d, open('force/graph5.json','w'))
 
-G = nx.grid_graph(dim=[4,4])
+
+G = nx.read_gpickle('metagraph5_reduced')
+
+# this d3 example uses the name attribute for the mouse-hover value,
+# so add a name to each node
+for n in G.nodes(data=True):
+    n[1]['name'] = n[1]['Type']
 H = nx.convert_node_labels_to_integers(G)
 # write json formatted data
 d = json_graph.node_link_data(H) # node-link format to serialize
 # write json
-json.dump(d, open('force/gridist4.json','w'))
+json.dump(d, open('force/graph5-r.json','w'))
+'''
+
 
 
 
@@ -52,5 +47,5 @@ json.dump(d, open('force/gridist4.json','w'))
 
 print('Wrote node-link JSON data to force/force.json')
 # open URL in running web browser
-http_server.load_url('force/metagraph4.html')
+http_server.load_url('force/meta5.html')
 print('Or copy all files in force/ to webserver and load force/force.html')
