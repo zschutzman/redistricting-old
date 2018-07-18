@@ -155,6 +155,8 @@ vis.selectAll("line.link").each(function(d){
 
 
 function connectedNodes() {
+        if (d3.event.defaultPrevented) return;
+
             console.log(d3.select(this).attr("on"), "ON", toggle, "TOG");
 
     if (d3.select(this).attr("on") ==1){

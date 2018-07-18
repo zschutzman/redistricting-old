@@ -72,6 +72,8 @@ _.times(squaresColumn, function(n) {
     
     
 function do_update(){    
+        if (d3.event.defaultPrevented) return;
+
         var t = parseInt(d3.select(this).attr("party"));
         d3.select(this).attr("party", t+1);
         if (d3.select(this).attr("party") == 2){d3.select(this).attr("party",-1);}

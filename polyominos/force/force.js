@@ -63,7 +63,7 @@ d3.json("gr.json", function(json) {
       .attr("on",0)
       .style("fill", function(d) { if (d.Type == 20) return 'PapayaWhip'; if (d.Type == 21) return 'Gold'; return fill(d.Type); })
       .call(force.drag)
-      .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+      .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
 
       .on("mouseover",function(){
         var t = d3.select(this).attr("type");
@@ -149,6 +149,8 @@ vis.selectAll("line.link").each(function(d){
 
 
 function connectedNodes() {
+        if (d3.event.defaultPrevented) return;
+
             console.log(d3.select(this).attr("on"), "ON", toggle, "TOG");
 
     if (d3.select(this).attr("on") ==1){

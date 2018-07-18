@@ -172,6 +172,8 @@ function neighboring(a, b) {
 }
 
 function connectedNodes() {
+        if (d3.event.defaultPrevented) return;
+
     if (d3.select(this).attr("on") ==1){
         node.style("opacity", 1);
         console.log("1");

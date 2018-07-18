@@ -47,5 +47,5 @@ json.dump(d, open('force/graph5-r.json','w'))
 
 print('Wrote node-link JSON data to force/force.json')
 # open URL in running web browser
-http_server.load_url('force/meta5.html')
+http_server.load_url('force/metagraph5.html')
 print('Or copy all files in force/ to webserver and load force/force.html')

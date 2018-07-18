@@ -104,6 +104,8 @@ vis2.selectAll("line.link").each(function(d){
 
 
 function connectedNodes2() {
+        if (d3.event.defaultPrevented) return;
+
         console.log(d3.select(this).attr("on"), "ON", toggle, "TOG");
 
           vis.selectAll("circle.node").each(function(d){
