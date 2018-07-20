@@ -55,6 +55,7 @@ d3.json(g, function(json) {
       .attr("idno", function(d) {return d.name;})
       .call(force.drag)
       .style("opacity",0)
+
       .on("click",swapgraph);
   node.append("rect").attr("width", 75)
       .attr("height", 75)
@@ -136,7 +137,15 @@ d3.json(g, function(json) {
     .duration(1200)
     .style("opacity",1);
     
+    d3.selectAll("g").each(function(d){
+        console.log(d.name==idno);
+        if (d.name == idno) {d.x = tx; d.y=ty;}
+    });
 
+
+    
+    
+    
   force.on("tick", function() {
       
       //moveToRadial();
@@ -147,10 +156,22 @@ d3.json(g, function(json) {
 
     node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
   });
+  
+
 });
+
+
 
 }
 mk_gr("m5-graphs/whole/g0.json");
+
+
+    d3.selectAll("g").each(function(d){
+        console.log(d);
+        
+        if (d.name == idno) {d.x = 100; d.y=ty; d.fixed=true;}
+        console.log(d);
+    });
 
 
 function swapgraph(){
@@ -165,7 +186,9 @@ function swapgraph(){
                 
                 
                 
-                
+    tx = d3.select(this).attr("cx");
+    ty = d3.select(this).attr("cy");
+    
     idno = d3.select(this).attr("idno");
     vis.selectAll(".link").remove();
     vis.selectAll(".node").remove();
