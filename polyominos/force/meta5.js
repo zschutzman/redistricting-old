@@ -94,7 +94,7 @@ d3.json(fn, function(error, treeData) {
 
             .on("click",swapgraph)
 
-      .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+      .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
 
       .on("mouseover",function(){
         var c = d3.select(this);
@@ -191,6 +191,7 @@ function swapgraph(){
     mk_gr("m5-graphs/whole_trees2/g"+d3.select(this).data()[0].data.name+".json", d3.select(this).data()[0].data.name);
     do_update(-1);
     do_update2();
+
     
 }
 
@@ -262,6 +263,7 @@ _.times(squaresColumn, function(n) {
      clsq = true;
      do_update(this);
      do_update2();
+     compute_hists();
     }
     );
 
@@ -312,8 +314,100 @@ function do_update2(){
         console.log("YAAA");
 
         grd.selectAll("rect").each(function(e){
-            rwin = 0;
-bwin = 0;
+
+            var b = parseInt(d3.select(this).attr("party"));
+            if (chk[cnt] == 1){
+            dist1 = dist1 + b;
+            } else  if (chk[cnt] == 2){
+            dist2 = dist2 + b;
+            }else   if (chk[cnt] == 3){
+            dist3 = dist3 + b;
+            }else   if (chk[cnt] == 4){
+            dist4 = dist4 + b;
+            }else   if (chk[cnt] == 5){
+            dist5 = dist5 + b;
+                       }
+            cnt = cnt+1;
+
+        });
+        dist1 = Math.sign(dist1);
+        dist2 = Math.sign(dist2);
+        dist3 = Math.sign(dist3);
+        dist4 = Math.sign(dist4);
+        dist5 = Math.sign(dist5);
+        
+
+        var col = Math.sign(dist1 + dist2 + dist3 + dist4 + dist5) + 1;
+        d3.select(this).style("fill", simp_fill[col]);
+        });
+    clsq = false;
+
+    }
+    
+function get_col(chkstr){
+        var chk = chkstr;
+        dist1=0;
+        dist2=0;
+        dist3=0;
+        dist4=0;
+        dist5=0;
+        cnt=0;
+        console.log("YAAA");
+
+        grd.selectAll("rect").each(function(e){
+
+            var b = parseInt(d3.select(this).attr("party"));
+            if (chk[cnt] == 1){
+            dist1 = dist1 + b;
+            } else  if (chk[cnt] == 2){
+            dist2 = dist2 + b;
+            }else   if (chk[cnt] == 3){
+            dist3 = dist3 + b;
+            }else   if (chk[cnt] == 4){
+            dist4 = dist4 + b;
+            }else   if (chk[cnt] == 5){
+            dist5 = dist5 + b;
+                       }
+            cnt = cnt+1;
+
+        });
+        dist1 = Math.sign(dist1);
+        dist2 = Math.sign(dist2);
+        dist3 = Math.sign(dist3);
+        dist4 = Math.sign(dist4);
+        dist5 = Math.sign(dist5);
+        
+
+        var col = Math.sign(dist1 + dist2 + dist3 + dist4 + dist5) + 1;
+
+        return simp_fill[col];
+    
+    
+}
+
+
+function compute_hists(){
+        r_win_i = [0,0,0,0,0,0];
+        b_win_i = [0,0,0,0,0,0];
+        n_win_i = [0,0,0,0,0,0];    
+    for(var i=0; i<Object.keys(plan_strings).length; i++){
+        
+        
+        var chk = plan_strings[i];
+
+        dist1=0;
+        dist2=0;
+        dist3=0;
+        dist4=0;
+        dist5=0;
+        cnt=0;
+        rwin = 0;
+        bwin = 0;
+
+        
+        
+        grd.selectAll("rect").each(function(e){
+
             var b = parseInt(d3.select(this).attr("party"));
             if (chk[cnt] == 1){
             dist1 = dist1 + b;
@@ -348,50 +442,10 @@ bwin = 0;
         
         r_win_i[parseInt(rwin)] += 1;
         b_win_i[parseInt(bwin)] += 1;
-        var col = Math.sign(dist1 + dist2 + dist3 + dist4 + dist5) + 1;
-        d3.select(this).style("fill", simp_fill[col]);
-        });
-    clsq = false;
-    console.log(r_win_i,b_win_i);
-    }
-    
-function get_col(chkstr){
-        var chk = chkstr;
-        dist1=0;
-        dist2=0;
-        dist3=0;
-        dist4=0;
-        dist5=0;
-        cnt=0;
-        console.log("YAAA");
-
-        grd.selectAll("rect").each(function(e){
-            rwin = 0;
-bwin = 0;
-            var b = parseInt(d3.select(this).attr("party"));
-            if (chk[cnt] == 1){
-            dist1 = dist1 + b;
-            } else  if (chk[cnt] == 2){
-            dist2 = dist2 + b;
-            }else   if (chk[cnt] == 3){
-            dist3 = dist3 + b;
-            }else   if (chk[cnt] == 4){
-            dist4 = dist4 + b;
-            }else   if (chk[cnt] == 5){
-            dist5 = dist5 + b;
-                       }
-            cnt = cnt+1;
-
-        });
-        dist1 = Math.sign(dist1);
-        dist2 = Math.sign(dist2);
-        dist3 = Math.sign(dist3);
-        dist4 = Math.sign(dist4);
-        dist5 = Math.sign(dist5);
-        
-
-        var col = Math.sign(dist1 + dist2 + dist3 + dist4 + dist5) + 1;
-        return simp_fill[col];
-    
     
 }
+    
+    console.log(b_win_i,r_win_i);
+}
+
+compute_hists();
