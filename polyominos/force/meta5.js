@@ -14,11 +14,15 @@ var clsq = false;
 
 
  var request = new XMLHttpRequest();
+   request.open("GET", "../plan_strings.json", false);
+   request.send(null)
+   var plan_strings = JSON.parse(request.responseText);
+
+   
+ var request = new XMLHttpRequest();
    request.open("GET", "../dist_strings.json", false);
    request.send(null)
-   var my_JSON_object = JSON.parse(request.responseText);
-   console.log(my_JSON_object);
-
+   var dist_strings = JSON.parse(request.responseText);
 var r_win_i = [0,0,0,0,0,0];
 var b_win_i = [0,0,0,0,0,0];
 var n_win_i = [0,0,0,0,0,0];
