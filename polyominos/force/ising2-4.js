@@ -4,7 +4,32 @@ var dist2 = 0;
 var dist3 = 0;
 var dist4 = 0;
 var cnt = 0;
+function get_col(chkstr){
+        var chk = chkstr;
+        dist1=0;
+        dist2=0;
+        dist3=0;
+        dist4=0;
+        dist5=0;
+        cnt=0;
+        console.log("YAAA");
 
+        grd.selectAll("rect").each(function(e){
+            console.log(d3.select(e));
+            for(var i=0;i<5;i++){
+                console.log(d3.select(this).attr("districts"), "DISTRICTS");
+             cnt += dist_wins[d3.select(this).attr("districts")[i]];   
+            }
+
+        
+   
+        
+
+        var col = Math.sign(cnt) + 1;
+        d3.select(this).style("fill", simp_fill[col]);
+    
+    });
+}
 var simp_fill = ['#0000ff','#808080','#ff0000'];
 
 // create the svg
