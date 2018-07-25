@@ -3,7 +3,7 @@
 import sys
 
 def load_url(path):
-    PORT = 8088
+    PORT = 8081
     httpd = StoppableHTTPServer(("127.0.0.1",PORT), handler)
     thread.start_new_thread(httpd.serve, ())
     webbrowser.open_new('http://localhost:%s/%s'%(PORT,path))

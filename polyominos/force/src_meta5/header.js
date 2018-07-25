@@ -45,7 +45,9 @@ var clsq = false;
    request.open("GET", "./partial_plan_tree.json", false);
    request.send(null)
    var partial_plan_tree = JSON.parse(request.responseText);
-   
+console.log(partial_plan_tree);
+
+
    
 for (var key in plan_wins){
     plan_wins[key] = JSON.parse("[" +  plan_wins[key].split("(").join("").split(")").join("") + "]");}
@@ -58,36 +60,114 @@ var bwin=0;
 
 console.log(partial_plan_tree);
 
-for (var key in partial_plan_tree){
-    var k = JSON.parse("[" +  key.split("(").join("").split(")").join("") + "]")
-    console.log(k.length);
-}
+
 
 var hoff = 130;
 var voff = 15;
 
 
+var plan = [];
 
 
-
-
+function testclick(){
+    console.log("CLICKY");
+    plan.push(parseInt(d3.select(this).attr("distno")));
+    console.log(plan);
+  
+    distbox.selectAll("g").remove();
+    constr_distbox();
+    
+}
 
 
 
 var distbox = d3.select("body").append("svg")
-            .attr("width",200)
-            .attr("height",70000);
+            .attr("width",600)
+            .attr("height",1200);
+
+ function constr_distbox(){           
+            var wgrp = distbox.append("g").attr("transform","translate(0,15)");
+            var i = 0;
+            var j = 0;
+if (plan.length == 0){
+for (var k=0; k<40; k++){
+    if (partial_plan_tree["("+k+")"] != null){
+        var kk = k;
+        
 
             
-            var wgrp = distbox.append("g").attr("transform","translate(0,15)");
             
-            for (var i=0;i<Object.keys(dist2html).length;i++){
-                console.log(dist2html[i]);
+            
+            
+            
+            
+            
             wgrp.append("foreignObject")
                     .attr("width",70)
                     .attr("height", 70)
-                    .attr("x",70)
+                    .attr("x",70+j*8*voff)
                     .attr("y",100+i*8*voff)
-                    .append("xhtml:body").html(function(d) {return '<p style="margin:0;padding:0;font-size:25px;letter-spacing:-1px;line-height:20px;">'+dist2html[i]+'</p>';});  
-                }
+                    .append("xhtml:body").html(function(d) {return '<p style="margin:0;padding:0;font-size:25px;letter-spacing:-1px;line-height:20px;">'+dist2html[kk]+'</p>';})
+                    
+            wgrp.append("rect")
+                .attr("width",115)
+                .attr("height", 115)
+                .attr("x",70+j*8*voff)
+                .attr("y",100+i*8*voff)
+                .style("stroke-width",5)
+                .style("stroke","purple")
+                .style("fill-opacity",0)
+                .attr("distno", kk)
+                .on("click",testclick);
             
+                
+                
+            j+=1;
+            if (j==4){j=0; i+=1;}
+                }
+}
+}
+
+
+
+else if (plan.length >= 1){
+    var plkey = "(" + plan.join(", ") + ")";
+    console.log(plkey,"KEY");
+    console.log(partial_plan_tree[plkey],"AT KEY")
+    console.log(partial_plan_tree[plkey].length, "LEN");
+    var i= 0;
+    var j = 0;
+    for (var k=0; k<partial_plan_tree[plkey].length; k++){
+       var kk = partial_plan_tree[plkey][k][plan.length];
+       
+       
+                  wgrp.append("foreignObject")
+                    .attr("width",70)
+                    .attr("height", 70)
+                    .attr("x",70+j*8*voff)
+                    .attr("y",100+i*8*voff)
+                    .append("xhtml:body").html(function(d) {return '<p style="margin:0;padding:0;font-size:25px;letter-spacing:-1px;line-height:20px;">'+dist2html[kk]+'</p>';})
+                    
+            wgrp.append("rect")
+                .attr("width",115)
+                .attr("height", 115)
+                .attr("x",70+j*8*voff)
+                .attr("y",100+i*8*voff)
+                .style("stroke-width",5)
+                .style("stroke","purple")
+                .style("fill-opacity",0)
+                .attr("distno", kk)
+                .on("click",testclick);
+            
+                
+                
+            j+=1;
+            if (j==4){j=0; i+=1;}
+    }}
+    
+    
+    
+
+
+ }
+ constr_distbox();
