@@ -45,7 +45,13 @@ var clsq = false;
    request.open("GET", "./partial_plan_tree.json", false);
    request.send(null)
    var partial_plan_tree = JSON.parse(request.responseText);
-console.log(partial_plan_tree);
+   
+
+ var request = new XMLHttpRequest();
+   request.open("GET", "./part_plan2html.json", false);
+   request.send(null)
+   var part_plan2html = JSON.parse(request.responseText);
+console.log(part_plan2html);
 
 
    
@@ -58,7 +64,6 @@ var n_win_i = [0,0,0,0,0,0];
 var rwin = 0;
 var bwin=0;
 
-console.log(partial_plan_tree);
 
 
 
@@ -71,6 +76,7 @@ var plan = [];
 
 function testclick(){
     console.log("CLICKY");
+    console.log(d3.select(this).attr("distno"));
     plan.push(parseInt(d3.select(this).attr("distno")));
     console.log(plan);
   
@@ -92,14 +98,9 @@ var distbox = d3.select("body").append("svg")
 if (plan.length == 0){
 for (var k=0; k<40; k++){
     if (partial_plan_tree["("+k+")"] != null){
-        var kk = k;
+        var kk = "("+k+")";
         
 
-            
-            
-            
-            
-            
             
             
             wgrp.append("foreignObject")
@@ -107,7 +108,7 @@ for (var k=0; k<40; k++){
                     .attr("height", 70)
                     .attr("x",70+j*8*voff)
                     .attr("y",100+i*8*voff)
-                    .append("xhtml:body").html(function(d) {return '<p style="margin:0;padding:0;font-size:25px;letter-spacing:-1px;line-height:20px;">'+dist2html[kk]+'</p>';})
+                    .append("xhtml:body").html(function(d) {return '<p style="margin:0;padding:0;font-size:25px;letter-spacing:-1px;line-height:20px;">'+part_plan2html[kk]+'</p>';})
                     
             wgrp.append("rect")
                 .attr("width",115)
@@ -117,7 +118,7 @@ for (var k=0; k<40; k++){
                 .style("stroke-width",5)
                 .style("stroke","purple")
                 .style("fill-opacity",0)
-                .attr("distno", kk)
+                .attr("distno", k)
                 .on("click",testclick);
             
                 
@@ -132,13 +133,15 @@ for (var k=0; k<40; k++){
 
 else if (plan.length >= 1){
     var plkey = "(" + plan.join(", ") + ")";
-    console.log(plkey,"KEY");
-    console.log(partial_plan_tree[plkey],"AT KEY")
-    console.log(partial_plan_tree[plkey].length, "LEN");
+
     var i= 0;
     var j = 0;
     for (var k=0; k<partial_plan_tree[plkey].length; k++){
-       var kk = partial_plan_tree[plkey][k][plan.length];
+       var kk = partial_plan_tree[plkey][k];
+       console.log(kk);
+       var dno =  kk[kk.length-1];
+       console.log(dno, "DNO");
+       kk = "(" + kk.join(", ") + ")"
        
        
                   wgrp.append("foreignObject")
@@ -146,7 +149,7 @@ else if (plan.length >= 1){
                     .attr("height", 70)
                     .attr("x",70+j*8*voff)
                     .attr("y",100+i*8*voff)
-                    .append("xhtml:body").html(function(d) {return '<p style="margin:0;padding:0;font-size:25px;letter-spacing:-1px;line-height:20px;">'+dist2html[kk]+'</p>';})
+                    .append("xhtml:body").html(function(d) {return '<p style="margin:0;padding:0;font-size:25px;letter-spacing:-1px;line-height:20px;">'+part_plan2html[kk]+'</p>';})
                     
             wgrp.append("rect")
                 .attr("width",115)
@@ -156,7 +159,7 @@ else if (plan.length >= 1){
                 .style("stroke-width",5)
                 .style("stroke","purple")
                 .style("fill-opacity",0)
-                .attr("distno", kk)
+                .attr("distno", dno)
                 .on("click",testclick);
             
                 
