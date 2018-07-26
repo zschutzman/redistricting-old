@@ -8,6 +8,14 @@ var w = width;
 var h = height;
 var lx=-1;
 var ly=-1;
+
+var simp_fill = ['#244999','#BBAA90','#D22532'];
+
+// calculate number of rows and columns
+var squaresRow = 5;
+var squaresColumn = 5;
+var square=25;
+
   
     
 var clsq = false;
@@ -51,9 +59,14 @@ var clsq = false;
    request.open("GET", "./part_plan2html.json", false);
    request.send(null)
    var part_plan2html = JSON.parse(request.responseText);
-console.log(part_plan2html);
 
+   
+ var request = new XMLHttpRequest();
+   request.open("GET", "./dist_lookup.json", false);
+   request.send(null)
+   var dist_lookup = JSON.parse(request.responseText);
 
+console.log(dist_lookup);
    
 for (var key in plan_wins){
     plan_wins[key] = JSON.parse("[" +  plan_wins[key].split("(").join("").split(")").join("") + "]");}
@@ -75,12 +88,33 @@ var plan = [];
 
 
 function testclick(){
-    console.log("CLICKY");
-    console.log(d3.select(this).attr("distno"));
     plan.push(parseInt(d3.select(this).attr("distno")));
-    console.log(plan);
   
     distbox.selectAll("g").remove();
+    if (plan.length ==5){
+     
+        var newgr = "("+plan.join(", ")+")";
+        console.log(newgr);
+        newgr = dist_lookup[newgr];
+        console.log(newgr);
+        var n = 0;
+        if (newgr !=idno){
+               graph.selectAll("g").each(function(){n++;})
+    .transition()
+    .duration(200)
+    .style("opacity",0)
+    .on("end",function(){n--;if(!n){cl_gr();
+                                    mk_gr("m5-graphs/whole_trees2/g"+newgr+".json", newgr);
+                                    graph.selectAll("g").transition()
+    .duration(200)
+    .style("opacity",1);
+                                   }
+                        });
+        }
+    
+        
+        
+        plan = [];}
     constr_distbox();
     
 }
@@ -88,10 +122,45 @@ function testclick(){
 
 
 var distbox = d3.select("body").append("svg")
-            .attr("width",600)
-            .attr("height",1200);
+            .attr("width",300)
+            .attr("height",800);
 
- function constr_distbox(){           
+distbox.append("rect")
+    .attr("x",0)
+    .attr("y",0)
+    .attr("width",100)
+    .attr("height",15)
+    .style("fill","red")
+    .on("click", function(d) {
+        plan = [];
+        distbox.selectAll("g").remove();
+        constr_distbox();
+    })
+distbox.append("text")
+   .attr("x",0)
+   .attr("y",7)
+   .text("RESET")
+   .attr('dy','0.35em')
+       .on("click", function(d) {
+        plan = [];
+        distbox.selectAll("g").remove();
+        constr_distbox();
+       });
+distbox.append("rect")
+    .attr("x",0)
+    .attr("y",0)
+    .attr("width",100)
+    .attr("height",15)
+    .style("fill","red")
+    .style("fill-opacity",0)
+    .on("click", function(d) {
+        plan = [];
+        distbox.selectAll("g").remove();
+        constr_distbox();
+    })
+
+
+ function constr_distbox(){      
             var wgrp = distbox.append("g").attr("transform","translate(0,15)");
             var i = 0;
             var j = 0;
@@ -103,19 +172,19 @@ for (var k=0; k<40; k++){
 
             
             
-            wgrp.append("foreignObject")
-                    .attr("width",70)
-                    .attr("height", 70)
-                    .attr("x",70+j*8*voff)
-                    .attr("y",100+i*8*voff)
-                    .append("xhtml:body").html(function(d) {return '<p style="margin:0;padding:0;font-size:25px;letter-spacing:-1px;line-height:20px;">'+part_plan2html[kk]+'</p>';})
+                  wgrp.append("foreignObject")
+                    .attr("width",35)
+                    .attr("height", 35)
+                    .attr("x",30+j*4*voff)
+                    .attr("y",30+i*4*voff)
+                    .append("xhtml:body").html(function(d) {return '<p style="margin:0;padding:0;font-size:12px;letter-spacing:-1px;line-height:9px;">'+part_plan2html[kk]+'</p>';})
                     
             wgrp.append("rect")
-                .attr("width",115)
-                .attr("height", 115)
-                .attr("x",70+j*8*voff)
-                .attr("y",100+i*8*voff)
-                .style("stroke-width",5)
+                .attr("width",50)
+                .attr("height", 50)
+                .attr("x",35+j*4*voff)
+                .attr("y",35+i*4*voff)
+                .style("stroke-width",2)
                 .style("stroke","purple")
                 .style("fill-opacity",0)
                 .attr("distno", k)
@@ -138,29 +207,28 @@ else if (plan.length >= 1){
     var j = 0;
     for (var k=0; k<partial_plan_tree[plkey].length; k++){
        var kk = partial_plan_tree[plkey][k];
-       console.log(kk);
        var dno =  kk[kk.length-1];
-       console.log(dno, "DNO");
        kk = "(" + kk.join(", ") + ")"
        
        
                   wgrp.append("foreignObject")
-                    .attr("width",70)
-                    .attr("height", 70)
-                    .attr("x",70+j*8*voff)
-                    .attr("y",100+i*8*voff)
-                    .append("xhtml:body").html(function(d) {return '<p style="margin:0;padding:0;font-size:25px;letter-spacing:-1px;line-height:20px;">'+part_plan2html[kk]+'</p>';})
+                    .attr("width",35)
+                    .attr("height", 35)
+                    .attr("x",30+j*4*voff)
+                    .attr("y",30+i*4*voff)
+                    .append("xhtml:body").html(function(d) {return '<p style="margin:0;padding:0;font-size:12px;letter-spacing:-1px;line-height:9px;">'+part_plan2html[kk]+'</p>';})
                     
             wgrp.append("rect")
-                .attr("width",115)
-                .attr("height", 115)
-                .attr("x",70+j*8*voff)
-                .attr("y",100+i*8*voff)
-                .style("stroke-width",5)
+                .attr("width",50)
+                .attr("height", 50)
+                .attr("x",35+j*4*voff)
+                .attr("y",35+i*4*voff)
+                .style("stroke-width",2)
                 .style("stroke","purple")
                 .style("fill-opacity",0)
                 .attr("distno", dno)
                 .on("click",testclick);
+            
             
                 
                 

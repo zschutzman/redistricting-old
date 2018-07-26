@@ -5,13 +5,14 @@ var tooltip = d3.select("body")
 	.style("opacity", 0);
 	
 
-var svg = d3.select("body").append("svg")
+var graph = d3.select("body").append("svg")
         .attr("width", width/3)
-    .attr("height", height/1.5)//.attr("transform", "translate(" + (width/3) + ",0)");
+    .attr("height", height/1.5)
+    .attr("transform", "translate(" + "-100" + ",-300)");
  
        
  
-    g = svg.append("g") .attr("transform", "translate(" + (width/6 ) + "," + (height/3) + ")");
+    g = graph.append("g") .attr("transform", "translate(" + (width/6 ) + "," + (height/3) + ")");
 
     
 
@@ -143,8 +144,8 @@ function radialPoint(x, y) {
 
   
  function cl_gr(){
-       svg.selectAll(".link").remove();
-    svg.selectAll(".node").remove();
+       graph.selectAll(".link").remove();
+    graph.selectAll(".node").remove();
  }
  
  
@@ -180,7 +181,7 @@ function get_col(){
         dist5=0;
         cnt=0;
 
-        svg.selectAll("rect").each(function(){
+        graph.selectAll("rect").each(function(){
             distloop = d3.select(this).attr("districts");
             distloop = JSON.parse("[" +  distloop.split("(").join("").split(")").join("") + "]")
             for(var i=0;i<5;i++){
@@ -220,13 +221,13 @@ function swapgraph(){
 
     
     
-    svg.selectAll("g").each(function(){n++;})
+    graph.selectAll("g").each(function(){n++;})
     .transition()
     .duration(200)
     .style("opacity",0)
     .on("end",function(){n--;if(!n){cl_gr();
                                     mk_gr("m5-graphs/whole_trees2/g"+newgr+".json", newgr);
-                                    svg.selectAll("g").transition()
+                                    graph.selectAll("g").transition()
     .duration(200)
     .style("opacity",1);
                                    }

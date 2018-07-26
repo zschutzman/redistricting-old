@@ -1,6 +1,8 @@
 var winbox = d3.select("body").append("svg")
             .attr("width",350)
             .attr("height",200)
+            .attr("transform","translate(0,-400)")
+
 
             
             var wgrp = winbox.append("g").attr("transform","translate(0,15)");

@@ -1,8 +1,8 @@
 var grd = d3.select('body').append('svg')
-  .attr("width", width/3)
-  .attr("height",height/1.5)
+  .attr("width", (square*6))
+  .attr("height",square*6)
 
-  .attr("transform","translate("+width/9+","+height/4+")");
+  .attr("transform","translate(-50,-500)");
   
   
 var chk = "";
@@ -14,12 +14,6 @@ var dist5 = 0;
 var cnt = 0;  
   
 
-var simp_fill = ['#244999','#BBAA90','#D22532'];
-
-// calculate number of rows and columns
-var squaresRow = 5;
-var squaresColumn = 5;
-var square=25;
 
 // loop over number of columns
 _.times(squaresColumn, function(n) {
