@@ -1,3 +1,5 @@
+var parties = [-1,1];
+
 var grd = d3.select('body').append('svg')
   .attr("width", (square*6))
   .attr("height",square*6)
@@ -12,7 +14,8 @@ var dist3 = 0;
 var dist4 = 0;
 var dist5 = 0;
 var cnt = 0;  
-  
+
+var ptmp;
 
 
 // loop over number of columns
@@ -39,8 +42,8 @@ _.times(squaresColumn, function(n) {
       })
       .attr("y", (n * 1.07*square))
     
-    .attr("party",0)
-    .style("fill",simp_fill[1])
+    .attr("party",function(d) {return parties[Math.floor(Math.random() * 2)];})
+    .style("fill",function(d) {console.log(1+parseInt(d3.select(this).attr("party"))); return simp_fill[1+parseInt(d3.select(this).attr("party"))];})
     .style("stroke","#555")
     .style("stroke-width",1)
     
@@ -72,8 +75,8 @@ function do_update(r){
    
         if (d3.event != null && r != -1){
             var t = parseInt(d3.select(r).attr("party"));
-            d3.select(r).attr("party", t+1);
-            if (d3.select(r).attr("party") == 2){d3.select(r).attr("party",-1);}
+            d3.select(r).attr("party", t+2);
+            if (d3.select(r).attr("party") == 3){d3.select(r).attr("party",-1);}
         }
   
 
