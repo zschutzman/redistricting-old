@@ -116,8 +116,9 @@ var link = g.selectAll(".link")
        .attr("x", -10)//-37
       .attr("y", -10)//-37
       .attr("str_rep", function(d){ return d.data.str_rep.split('\n').join("").split(" ").join("");})
-      .attr("idno", function(d) {return d.data.name;})
+      
         .attr("districts", function(d) { return d.data.tup;})
+        .attr("idno", function(d) {return d.data.name;})
         .style("fill", function(d) {return get_my_col(d);})
 
 
@@ -154,14 +155,18 @@ function radialPoint(x, y) {
  function get_my_col(rect){
     var cnt = 0;
   var chk = dist_wins;
+  
 
  distloop = rect.data.tup;
              for(var i=0;i<5;i++){
              cnt += Math.sign(chk[distloop[i]]);
             }
             
-            
+              if (rect.data.name == idno){red_this = (cnt+5)/2; update_textboxes();console.log("REDTHIS",red_this);}
+      
+
             var col = Math.sign(cnt) + 1;
+            if (col == 1){console.log("FOUND A 1?");}
             return simp_fill[col];
 }
 
@@ -179,20 +184,30 @@ function get_col(){
         dist3=0;
         dist4=0;
         dist5=0;
-        cnt=0;
-
+        red_this = 0;
+        console.log(graph.selectAll("rect"));
         graph.selectAll("rect").each(function(){
+                    cnt=0;
+
             distloop = d3.select(this).attr("districts");
             distloop = JSON.parse("[" +  distloop.split("(").join("").split(")").join("") + "]")
             for(var i=0;i<5;i++){
              cnt += Math.sign(chk[distloop[i]]);
+             
             }
 
+            if (d3.select(this).attr("idno") == idno){console.log("IN");red_this = (cnt + 5)/2;}
         
    
         
 
         var col = Math.sign(cnt) + 1;
+        if (col ==1){console.log("FOUND A 1??");
+            for(var i=0;i<5;i++){
+             console.log("IT",i,Math.sign(chk[distloop[i]]));
+             
+            }
+        }
         d3.select(this).style("fill", simp_fill[col]);
     
     });
@@ -234,7 +249,7 @@ function swapgraph(){
                         });
     var cnt = 0;
     var chk = compute_hists();
-
+    
     do_update(-1);
 
 

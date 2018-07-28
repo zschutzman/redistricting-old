@@ -2,7 +2,8 @@ var width = Math.round(1*document.documentElement.clientWidth)
     height = Math.round(1*document.documentElement.clientHeight)
     idno = 0;
     
-
+var num_red = 0;
+var red_this = 0;
 var w = width;
 
 var h = height;
@@ -22,49 +23,55 @@ var clsq = false;
 
 
  var request = new XMLHttpRequest();
-   request.open("GET", "./src-meta5/data/plan_strings.json", false);
+   request.open("GET", "./src_meta5/data/plan_strings.json", false);
    request.send(null)
    var plan_strings = JSON.parse(request.responseText);
 
    
  var request = new XMLHttpRequest();
-   request.open("GET", "./src-meta5/data/dist_strings.json", false);
+   request.open("GET", "./src_meta5/data/dist_strings.json", false);
    request.send(null)
    var dist_strings = JSON.parse(request.responseText);
 
  var request = new XMLHttpRequest();
-   request.open("GET", "./src-meta5/data/dist_wins.json", false);
+   request.open("GET", "./src_meta5/data/dist_wins.json", false);
    request.send(null)
    var dist_wins = JSON.parse(request.responseText);
    
  var request = new XMLHttpRequest();
-   request.open("GET", "./src-meta5/data/plan_wins.json", false);
+   request.open("GET", "./src_meta5/data/plan_wins.json", false);
    request.send(null)
    var plan_wins = JSON.parse(request.responseText);
    
 
  var request = new XMLHttpRequest();
-   request.open("GET", "./src-meta5/data/dist2html.json", false);
+   request.open("GET", "./src_meta5/data/dist2html.json", false);
    request.send(null)
    var dist2html = JSON.parse(request.responseText);
    
 
  var request = new XMLHttpRequest();
-   request.open("GET", "./src-meta5/data/partial_plan_tree.json", false);
+   request.open("GET", "./src_meta5/data/partial_plan_tree.json", false);
    request.send(null)
    var partial_plan_tree = JSON.parse(request.responseText);
    
 
  var request = new XMLHttpRequest();
-   request.open("GET", "./src-meta5/data/part_plan2html.json", false);
+   request.open("GET", "./src_meta5/data/part_plan2html.json", false);
    request.send(null)
    var part_plan2html = JSON.parse(request.responseText);
 
    
  var request = new XMLHttpRequest();
-   request.open("GET", "./src-meta5/data/dist_lookup.json", false);
+   request.open("GET", "./src_meta5/data/dist_lookup.json", false);
    request.send(null)
    var dist_lookup = JSON.parse(request.responseText);
+   
+ var request = new XMLHttpRequest();
+   request.open("GET", "./src_meta5/data/elec_dist.json", false);
+   request.send(null)
+   var elec_dist = JSON.parse(request.responseText);
+
 
 console.log(dist_lookup);
    

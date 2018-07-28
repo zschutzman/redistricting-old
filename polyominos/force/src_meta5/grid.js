@@ -63,7 +63,8 @@ _.times(squaresColumn, function(n) {
      clsq = true;
      do_update(this);
      get_col();
-     compute_hists();
+     //compute_hists();
+     update_textboxes();
     }
     );
 
@@ -72,14 +73,12 @@ _.times(squaresColumn, function(n) {
     
   
 function do_update(r){
-   
         if (d3.event != null && r != -1){
             var t = parseInt(d3.select(r).attr("party"));
             d3.select(r).attr("party", t+2);
             if (d3.select(r).attr("party") == 3){d3.select(r).attr("party",-1);}
         }
   
-
 
     grd.selectAll('rect').each(function(d){
         if (d3.select(this).attr("party") == 0) d3.select(this).style("fill", simp_fill[1]);

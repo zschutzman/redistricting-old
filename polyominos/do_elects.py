@@ -20,6 +20,7 @@ import random
 import matplotlib.pyplot as plt
 import networkx as nx
 import collections
+from datetime import datetime
 
 #Given an omino (nxn binary matrix), checks if it is valid
 # i.e. all ones are rook-adjacent and contiguous
@@ -224,7 +225,7 @@ for o in G.nodes(data=True):
 
 
 print("ELECS")
-
+'''
 for i in range(26):
     for o in G2.nodes(data=True):
         o[1]['w'+str(i)] = [0,0,0,0,0,0]
@@ -245,12 +246,39 @@ for i in range(4):
             w = sum([s.count(str(k+1)) >= 3  for k in  range(5)   ]       )
             
             o[1]['w'+str(i)][w]+=1
-    print("DONE {}".format(i))
+    print("DONE {}".format(i))'''
 
 
 
+import json
+tic = datetime.now()
 
 
+G2 = nx.convert_node_labels_to_integers(G2)
 
-nx.write_gpickle(G2,'meta_with_elections')
+elect_list = [ [None,{}] for i in range(len(list(G2.nodes())))]
 
+
+def elect_dict_map(i):
+    newdict = {}
+    node = G2.nodes[i]
+    
+    ck = node['str_rep'].replace(" ",'').replace("\n",'')
+    #newdict['tup'] = node['tup']
+    for j in range(26):
+        newdict[j] = [0,0,0,0,0,0]
+        for l in itertools.combinations(range(25),j):
+            s = ''
+            for k in l:
+                s+= ck[k]
+            w = sum([s.count(str(k+1)) >= 3  for k in  range(5)   ]       )
+            newdict[j][w] +=1
+    with open("force/src_meta5/data/elec_dist.json",'w') as fp:
+        json.dump(newdict,fp)
+    print(datetime.now()-tic, " FOR {}".format(i))
+    return (i,newdict)
+
+pool = Pool(3)
+results = pool.map(elect_dict_map,[1])
+
+        
