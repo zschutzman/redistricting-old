@@ -22,47 +22,47 @@ var clsq = false;
 
 
  var request = new XMLHttpRequest();
-   request.open("GET", "./plan_strings.json", false);
+   request.open("GET", "./src-meta5/data/plan_strings.json", false);
    request.send(null)
    var plan_strings = JSON.parse(request.responseText);
 
    
  var request = new XMLHttpRequest();
-   request.open("GET", "./dist_strings.json", false);
+   request.open("GET", "./src-meta5/data/dist_strings.json", false);
    request.send(null)
    var dist_strings = JSON.parse(request.responseText);
 
  var request = new XMLHttpRequest();
-   request.open("GET", "./dist_wins.json", false);
+   request.open("GET", "./src-meta5/data/dist_wins.json", false);
    request.send(null)
    var dist_wins = JSON.parse(request.responseText);
    
  var request = new XMLHttpRequest();
-   request.open("GET", "./plan_wins.json", false);
+   request.open("GET", "./src-meta5/data/plan_wins.json", false);
    request.send(null)
    var plan_wins = JSON.parse(request.responseText);
    
 
  var request = new XMLHttpRequest();
-   request.open("GET", "./dist2html.json", false);
+   request.open("GET", "./src-meta5/data/dist2html.json", false);
    request.send(null)
    var dist2html = JSON.parse(request.responseText);
    
 
  var request = new XMLHttpRequest();
-   request.open("GET", "./partial_plan_tree.json", false);
+   request.open("GET", "./src-meta5/data/partial_plan_tree.json", false);
    request.send(null)
    var partial_plan_tree = JSON.parse(request.responseText);
    
 
  var request = new XMLHttpRequest();
-   request.open("GET", "./part_plan2html.json", false);
+   request.open("GET", "./src-meta5/data/part_plan2html.json", false);
    request.send(null)
    var part_plan2html = JSON.parse(request.responseText);
 
    
  var request = new XMLHttpRequest();
-   request.open("GET", "./dist_lookup.json", false);
+   request.open("GET", "./src-meta5/data/dist_lookup.json", false);
    request.send(null)
    var dist_lookup = JSON.parse(request.responseText);
 
